@@ -31,7 +31,7 @@ export default function RootLayout({
             >
             <nav className="bg-primary p-4 text-white h-20 flex items-center justify-between ">
                 <Link href={'/'} className={'font-bold text-2xl flex gap-1 items-center '}>
-                    <ChartColumnBigIcon className={'text-lime-500'}/> NextCash
+                    <ChartColumnBigIcon className={'text-lime-500'}/> Finance Tracker
                 </Link>
                 <SignedOut>
                     <div className={'flex items-center'}>
