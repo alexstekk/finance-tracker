@@ -3,7 +3,9 @@ import {Poppins} from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import {ChartColumnBigIcon} from "lucide-react";
-import {ClerkProvider, SignedOut, SignInButton, SignUpButton} from "@clerk/nextjs";
+import {ClerkProvider, SignedIn, SignedOut, SignIn, SignInButton, SignUpButton} from "@clerk/nextjs";
+import {Button} from "@/components/ui/button";
+import UserDropdown from "@/app/user-dropdown";
 
 const poppins = Poppins({
     variable: "--font-poppins",
@@ -33,10 +35,17 @@ export default function RootLayout({
                 </Link>
                 <SignedOut>
                     <div className={'flex items-center'}>
-                        <SignInButton/>
-                        <SignUpButton/>
+                        <Button asChild variant={'link'} className={'text-white'}>
+                            <SignInButton/>
+                        </Button>
+                        <Button asChild variant={'link'} className={'text-white'}>
+                            <SignUpButton/>
+                        </Button>
                     </div>
                 </SignedOut>
+                <SignedIn>
+                    <UserDropdown/>
+                </SignedIn>
             </nav>
             {children}
             </body>
