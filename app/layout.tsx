@@ -3,7 +3,7 @@ import {Poppins} from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import {ChartColumnBigIcon} from "lucide-react";
-import {ClerkProvider, SignedIn, SignedOut, SignIn, SignInButton, SignUpButton} from "@clerk/nextjs";
+import {ClerkProvider, SignedIn, SignedOut, SignInButton, SignUpButton} from "@clerk/nextjs";
 import {Button} from "@/components/ui/button";
 import UserDropdown from "@/app/user-dropdown";
 
