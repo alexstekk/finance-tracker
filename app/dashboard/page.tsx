@@ -1,5 +1,5 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 export default function DashboardPage() {
-    return <Link href={'/dashboard/transactions/new'}>New transaction</Link>
+    return <Link href={'/dashboard/transactions/new'}>New transaction</Link>;
 }

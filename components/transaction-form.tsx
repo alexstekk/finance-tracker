@@ -1,16 +1,19 @@
-'use client'
+'use client';
 
-import {z} from "zod";
-import {addDays, format} from "date-fns";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {Popover, PopoverContent, PopoverTrigger} from "./ui/popover";
-import {Button} from "./ui/button";
-import {CalendarIcon} from "lucide-react";
-import {Calendar} from "./ui/calendar";
-import {Input} from "@/components/ui/input";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { addDays, format } from 'date-fns';
+import { CalendarIcon } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import { Button } from './ui/button';
+import { Calendar } from './ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { type Category } from '@/types/Category';
 
 const transactionFormSchema = z.object({
     transactionType: z.enum(['income', 'expense']),
@@ -18,9 +21,9 @@ const transactionFormSchema = z.object({
     transactionDate: z.coerce.date().max(addDays(new Date(), 1), 'Transactions day cannot be in the future'),
     amount: z.coerce.number().positive('Amount must be greater then 0'),
     description: z.string().min(3, 'Description must contain at least 3 characters').max(300, 'Description must contain a max of 300 characters')
-})
+});
 
-export default function TransactionForm() {
+export default function TransactionForm({ categories }: { categories: Category[] }) {
 
     const form = useForm<z.infer<typeof transactionFormSchema>>({
         resolver: zodResolver(transactionFormSchema),
@@ -31,11 +34,13 @@ export default function TransactionForm() {
             transactionDate: new Date(),
             transactionType: 'income',
         }
-    })
+    });
 
     const handleSubmit = async (data: z.infer<typeof transactionFormSchema>) => {
-        console.log({data});
-    }
+        console.log({ data });
+    };
+
+    const filteredCategories = categories.filter(category => category.type === form.getValues('transactionType'));
 
     return <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
@@ -43,12 +48,15 @@ export default function TransactionForm() {
                 <FormField
                     control={form.control}
                     name='transactionType'
-                    render={({field}) => {
+                    render={({ field }) => {
                         return (
                             <FormItem>
                                 <FormLabel>Transaction Type</FormLabel>
                                 <FormControl>
-                                    <Select value={field.value} onValueChange={field.onChange}>
+                                    <Select value={field.value} onValueChange={(newValue) => {
+                                        field.onChange(newValue);
+                                        form.setValue('categoryId', 0);
+                                    }}>
                                         <SelectTrigger>
                                             <SelectValue/>
                                         </SelectTrigger>
@@ -64,12 +72,12 @@ export default function TransactionForm() {
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
-                        )
+                        );
                     }}/>
                 <FormField
                     control={form.control}
                     name='categoryId'
-                    render={({field}) => {
+                    render={({ field }) => {
                         return (
                             <FormItem>
                                 <FormLabel>Category</FormLabel>
@@ -79,18 +87,23 @@ export default function TransactionForm() {
                                             <SelectValue/>
                                         </SelectTrigger>
                                         <SelectContent>
-
+                                            {filteredCategories.map(c =>
+                                                (
+                                                    <SelectItem value={c.id.toString()} key={c.id}>
+                                                        {c.name}
+                                                    </SelectItem>
+                                                ))}
                                         </SelectContent>
                                     </Select>
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
-                        )
+                        );
                     }}/>
                 <FormField
                     control={form.control}
                     name='transactionDate'
-                    render={({field}) => {
+                    render={({ field }) => {
                         return (
                             <FormItem>
                                 <FormLabel>Transaction Date</FormLabel>
@@ -103,7 +116,7 @@ export default function TransactionForm() {
                                                 className="w-full  data-[empty=true]:text-muted-foreground  justify-start text-left font-normal"
                                             >
                                                 <CalendarIcon/>
-                                                {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                                                {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
@@ -116,13 +129,13 @@ export default function TransactionForm() {
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
-                        )
+                        );
                     }}/>
 
                 <FormField
                     control={form.control}
                     name='amount'
-                    render={({field}) => {
+                    render={({ field }) => {
                         return (
                             <FormItem>
                                 <FormLabel>Amount</FormLabel>
@@ -131,26 +144,26 @@ export default function TransactionForm() {
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
-                        )
+                        );
                     }}/>
             </fieldset>
             <fieldset className={'mt-5 flex flex-col gap-5'}>
                 <FormField
                     control={form.control}
                     name='description'
-                    render={({field}) => {
+                    render={({ field }) => {
                         return (
                             <FormItem>
                                 <FormLabel>Description</FormLabel>
                                 <FormControl>
-                                    <Input  {...field}/>
+                                    <Input  {...field} />
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
-                        )
+                        );
                     }}/>
                 <Button type={'submit'}>Submit</Button>
             </fieldset>
         </form>
-    </Form>
+    </Form>;
 }

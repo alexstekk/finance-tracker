@@ -1,15 +1,20 @@
+import Link from 'next/link';
+
+import TransactionForm from '@/components/transaction-form';
 import {
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbLink,
     BreadcrumbList, BreadcrumbPage,
     BreadcrumbSeparator
-} from "@/components/ui/breadcrumb";
-import Link from "next/link";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
-import TransactionForm from "@/components/transaction-form";
+} from '@/components/ui/breadcrumb';  
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { getCategories } from '@/data/getCategories';
 
-export default function NewTransactionPage() {
+export default async function NewTransactionPage() {
+
+    const categories = await getCategories();
+
     return <div className={'max-w-screen-xl mx-auto py-10'}>
         <Breadcrumb>
             <BreadcrumbList>
@@ -35,8 +40,8 @@ export default function NewTransactionPage() {
                 <CardTitle>New Transaction</CardTitle>
             </CardHeader>
             <CardContent>
-                <TransactionForm/>
+                <TransactionForm categories={categories}/>
             </CardContent>
         </Card>
-    </div>
+    </div>;
 }
