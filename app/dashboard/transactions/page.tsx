@@ -1,5 +1,7 @@
 import { format } from 'date-fns';
+import { PencilIcon } from 'lucide-react';
 import Link from 'next/link';
+import numeral from 'numeral';
 import { z } from 'zod';
 
 import {
@@ -12,7 +14,9 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { getTransactionsByMonth } from '@/data/getTransactionsByMonth';
+
 
 const today = new Date();
 
@@ -32,7 +36,7 @@ export default async function TransactionPage({ searchParams }: {
     const selectedDate = new Date(year, month - 1, 1);
 
     const transactions = await getTransactionsByMonth({ month, year });
- 
+
     return (
         <div className={'max-w-screen-xl mx-auto py-10'}>
             <Breadcrumb>
@@ -63,6 +67,57 @@ export default async function TransactionPage({ searchParams }: {
                             New Transaction
                         </Link>
                     </Button>
+                    {!transactions?.length &&
+                        <p className={'text-center p-10 text-lg text-muted-foreground'}>There are no transactions for
+                            this month</p>}
+                    {
+                        !!transactions?.length &&
+                        <Table className={'mt-4 '}>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>
+                                        Date
+                                    </TableHead>
+                                    <TableHead>
+                                        Description
+                                    </TableHead>
+                                    <TableHead>
+                                        Type
+                                    </TableHead>
+                                    <TableHead>
+                                        Amount
+                                    </TableHead>
+                                    <TableHead/>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {transactions.map(t => (
+                                    <TableRow key={t.id}>
+                                        <TableCell>
+                                            {format(t.transactionDate, 'do MMM yyyy')}
+                                        </TableCell>
+                                        <TableCell>
+                                            {t.description}
+                                        </TableCell>
+                                        <TableCell>
+                                            {t.categoryId}
+                                        </TableCell>
+                                        <TableCell>
+                                            {numeral(t.amount).format('$0,0[.]00')}
+                                        </TableCell>
+                                        <TableCell className={'text-right'}>
+                                            <Button variant={'outline'} asChild size={'icon'}
+                                                    aria-label={'Edit transaction'}>
+                                                <Link href={`/dashboard/transactions/${t.id}`}>
+                                                    <PencilIcon/>
+                                                </Link>
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    }
                 </CardContent>
             </Card>
         </div>

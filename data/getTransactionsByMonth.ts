@@ -1,7 +1,7 @@
 import 'server-only';
 import { auth } from '@clerk/nextjs/server';
 import { format } from 'date-fns';
-import { and, eq, gte, lte } from 'drizzle-orm';
+import { and, desc, eq, gte, lte } from 'drizzle-orm';
 
 import { db } from '@/db';
 import { transactionsTable } from '@/db/schema';
@@ -27,7 +27,7 @@ export async function getTransactionsByMonth({
             gte(transactionsTable.transactionDate, format(earliestDate, 'yyyy-MM-dd')),
             lte(transactionsTable.transactionDate, format(latestDate, 'yyyy-MM-dd')),
         )
-    ).orderBy(transactionsTable.transactionDate);
+    ).orderBy(desc(transactionsTable.transactionDate));
 
     return transactions;
 }
