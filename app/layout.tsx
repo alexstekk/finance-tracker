@@ -9,6 +9,7 @@ import { ClerkProvider, SignedIn, SignedOut, SignInButton, SignUpButton } from '
 
 import UserDropdown from '@/app/user-dropdown';
 import { Button } from '@/components/ui/button';
+import { Toaster } from '@/components/ui/sonner';
 
 const poppins = Poppins({
     variable: '--font-poppins',
@@ -51,6 +52,7 @@ export default function RootLayout({
                 </SignedIn>
             </nav>
             {children}
+            <Toaster/>
             </body>
             </html>
         </ClerkProvider>

@@ -1,13 +1,14 @@
 import Link from 'next/link';
 
-import TransactionForm from '@/components/transaction-form';
+import NewTransactionForm from '@/app/dashboard/transactions/new/new-transaction-form';
 import {
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbLink,
-    BreadcrumbList, BreadcrumbPage,
+    BreadcrumbList,
+    BreadcrumbPage,
     BreadcrumbSeparator
-} from '@/components/ui/breadcrumb';  
+} from '@/components/ui/breadcrumb';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getCategories } from '@/data/getCategories';
 
@@ -40,7 +41,7 @@ export default async function NewTransactionPage() {
                 <CardTitle>New Transaction</CardTitle>
             </CardHeader>
             <CardContent>
-                <TransactionForm categories={categories}/>
+                <NewTransactionForm categories={categories}/>
             </CardContent>
         </Card>
     </div>;

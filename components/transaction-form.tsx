@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { type Category } from '@/types/Category';
 
-const transactionFormSchema = z.object({
+export const transactionFormSchema = z.object({
     transactionType: z.enum(['income', 'expense']),
     categoryId: z.coerce.number().positive('Please select a category'),
     transactionDate: z.coerce.date().max(addDays(new Date(), 1), 'Transactions day cannot be in the future'),
@@ -23,7 +23,15 @@ const transactionFormSchema = z.object({
     description: z.string().min(3, 'Description must contain at least 3 characters').max(300, 'Description must contain a max of 300 characters')
 });
 
-export default function TransactionForm({ categories }: { categories: Category[] }) {
+interface TransactionFormProps {
+    categories: Category[],
+    onSubmit: (data: z.infer<typeof transactionFormSchema>) => Promise<void>,
+}
+
+export default function TransactionForm({
+                                            categories,
+                                            onSubmit,
+                                        }: TransactionFormProps) {
 
     const form = useForm<z.infer<typeof transactionFormSchema>>({
         resolver: zodResolver(transactionFormSchema),
@@ -36,15 +44,15 @@ export default function TransactionForm({ categories }: { categories: Category[]
         }
     });
 
-    const handleSubmit = async (data: z.infer<typeof transactionFormSchema>) => {
-        console.log({ data });
-    };
+    // const handleSubmit = async (data: z.infer<typeof transactionFormSchema>) => {
+    //     onSubmit(data);
+    // };
 
     const filteredCategories = categories.filter(category => category.type === form.getValues('transactionType'));
 
     return <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)}>
-            <fieldset className={'grid grid-cols-2 gap-y-5 gap-x-2'}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+            <fieldset disabled={form.formState.isSubmitting} className={'grid grid-cols-2 gap-y-5 gap-x-2'}>
                 <FormField
                     control={form.control}
                     name='transactionType'
@@ -147,7 +155,7 @@ export default function TransactionForm({ categories }: { categories: Category[]
                         );
                     }}/>
             </fieldset>
-            <fieldset className={'mt-5 flex flex-col gap-5'}>
+            <fieldset disabled={form.formState.isSubmitting} className={'mt-5 flex flex-col gap-5'}>
                 <FormField
                     control={form.control}
                     name='description'
