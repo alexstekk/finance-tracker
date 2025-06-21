@@ -4,6 +4,7 @@ import Link from 'next/link';
 import numeral from 'numeral';
 import { z } from 'zod';
 
+import { Badge } from '@/components/ui/badge';
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -85,6 +86,9 @@ export default async function TransactionPage({ searchParams }: {
                                         Type
                                     </TableHead>
                                     <TableHead>
+                                        Category
+                                    </TableHead>
+                                    <TableHead>
                                         Amount
                                     </TableHead>
                                     <TableHead/>
@@ -99,8 +103,14 @@ export default async function TransactionPage({ searchParams }: {
                                         <TableCell>
                                             {t.description}
                                         </TableCell>
+                                        <TableCell className={'capitalize'}>
+                                            <Badge
+                                                className={t.transactionType === 'income' ? 'bg-lime-500' : 'bg-orange-500'}>
+                                                {t.transactionType}
+                                            </Badge>
+                                        </TableCell>
                                         <TableCell>
-                                            {t.categoryId}
+                                            {t.category}
                                         </TableCell>
                                         <TableCell>
                                             {numeral(t.amount).format('$0,0[.]00')}
