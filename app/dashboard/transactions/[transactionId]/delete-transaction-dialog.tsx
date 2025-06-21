@@ -7,7 +7,6 @@ import { toast } from 'sonner';
 import { deleteTransaction } from '@/app/dashboard/transactions/[transactionId]/actions';
 import {
     AlertDialog,
-    AlertDialogAction,
     AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
