@@ -4,6 +4,7 @@ import Link from 'next/link';
 import numeral from 'numeral';
 import { z } from 'zod';
 
+import Filters from '@/app/dashboard/transactions/filters';
 import { Badge } from '@/components/ui/badge';
 import {
     Breadcrumb,
@@ -16,6 +17,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { getTransactionYears } from '@/data/getTransactionYears';
 import { getTransactionsByMonth } from '@/data/getTransactionsByMonth';
 
 
@@ -38,6 +40,8 @@ export default async function TransactionPage({ searchParams }: {
 
     const transactions = await getTransactionsByMonth({ month, year });
 
+    const yearsRange = await getTransactionYears();
+
     return (
         <div className={'max-w-screen-xl mx-auto py-10'}>
             <Breadcrumb>
@@ -58,7 +62,7 @@ export default async function TransactionPage({ searchParams }: {
                     <CardTitle className={'flex justify-between'}>
                         <span>{format(selectedDate, 'MMM yyyy')} Transactions</span>
                         <div>
-                            dropdowns
+                            <Filters year={year} month={month} yearsRange={yearsRange ?? []}/>
                         </div>
                     </CardTitle>
                 </CardHeader>
