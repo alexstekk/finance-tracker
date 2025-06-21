@@ -12,7 +12,8 @@ export async function getTransaction(transactionId: number) {
         return null;
     }
 
-    const [transaction] = await db.select().from(transactionsTable).where(and(
+    const [transaction] = await db.select().from(transactionsTable)
+.where(and(
         eq(transactionsTable.id, transactionId),
         eq(transactionsTable.userId, userId),
     ));

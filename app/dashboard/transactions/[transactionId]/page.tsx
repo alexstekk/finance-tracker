@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import DeleteTransactionDialog from '@/app/dashboard/transactions/[transactionId]/delete-transaction-dialog';
 import EditTransactionForm from '@/app/dashboard/transactions/[transactionId]/edit-transaction-form';
 import {
     Breadcrumb,
@@ -58,7 +59,11 @@ export default async function EditTransactionPage({
             </Breadcrumb>
             <Card className={'mt-4 max-w-screen-md'}>
                 <CardHeader>
-                    <CardTitle>Edit Transaction</CardTitle>
+                    <CardTitle className={'flex justify-between'}>
+                        <span>Edit Transaction</span>
+                        <DeleteTransactionDialog transactionDate={transaction.transactionDate}
+                                                 transactionId={transaction.id}/>
+                    </CardTitle>
                 </CardHeader>
                 <CardContent>
                     <EditTransactionForm categories={categories} transaction={transaction}/>

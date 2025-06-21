@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { createTransaction } from '@/app/dashboard/transactions/new/actions';
+import { updateTransaction } from '@/app/dashboard/transactions/[transactionId]/actions';
 import TransactionForm, { transactionFormSchema } from '@/components/transaction-form';
 import { type Category } from '@/types/Category';
 
@@ -26,9 +26,15 @@ export default function EditTransactionForm({
     const router = useRouter();
 
     const handleSubmit = async (data: z.infer<typeof transactionFormSchema>) => {
-        const result: any = {};
+        const result = await updateTransaction({
+            id: transaction.id,
+            amount: data.amount,
+            description: data.description,
+            categoryId: data.categoryId,
+            transactionDate: format(data.transactionDate, 'yyyy-MM-dd'),
+        });
 
-        if (result.error) {
+        if (result?.error) {
             toast.error(result.message);
             return;
         }

@@ -36,6 +36,7 @@ const eslintConfig = [
                         order: 'asc',
                         caseInsensitive: false,
                     },
+
                 },
             ],
         },
