@@ -7,7 +7,7 @@ import { z } from 'zod';
 
 import { createTransaction } from '@/app/dashboard/transactions/new/actions';
 import TransactionForm, { transactionFormSchema } from '@/components/transaction-form';
-import { Category } from '@/types/Category';
+import { type Category } from '@/types/Category';
 
 export default function NewTransactionForm({
                                                categories

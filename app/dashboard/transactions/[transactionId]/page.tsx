@@ -1,5 +1,7 @@
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
+import EditTransactionForm from '@/app/dashboard/transactions/[transactionId]/edit-transaction-form';
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -10,6 +12,7 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getCategories } from '@/data/getCategories';
+import { getTransaction } from '@/data/getTransaction';
 
 export default async function EditTransactionPage({
                                                       params
@@ -22,10 +25,15 @@ export default async function EditTransactionPage({
     const transactionId = Number(paramsValues.transactionId);
 
     if (isNaN(transactionId)) {
-        return <div>oops! transaction not found</div>;
+        notFound();
     }
 
     const categories = await getCategories();
+    const transaction = await getTransaction(transactionId);
+
+    if (!transaction) {
+        notFound();
+    }
 
     return (
         <div className={'max-w-screen-xl mx-auto py-10'}>
@@ -53,7 +61,7 @@ export default async function EditTransactionPage({
                     <CardTitle>Edit Transaction</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    Edit form
+                    <EditTransactionForm categories={categories} transaction={transaction}/>
                 </CardContent>
             </Card>
         </div>

@@ -26,11 +26,19 @@ export const transactionFormSchema = z.object({
 interface TransactionFormProps {
     categories: Category[],
     onSubmit: (data: z.infer<typeof transactionFormSchema>) => Promise<void>,
+    defaultValues?: {
+        transactionType: 'income' | 'expense',
+        amount: number;
+        categoryId: number;
+        description: string;
+        transactionDate: Date;
+    }
 }
 
 export default function TransactionForm({
                                             categories,
                                             onSubmit,
+                                            defaultValues
                                         }: TransactionFormProps) {
 
     const form = useForm<z.infer<typeof transactionFormSchema>>({
@@ -41,6 +49,7 @@ export default function TransactionForm({
             description: '',
             transactionDate: new Date(),
             transactionType: 'income',
+            ...defaultValues,
         }
     });
 
