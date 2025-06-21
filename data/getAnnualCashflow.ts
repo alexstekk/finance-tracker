@@ -67,4 +67,6 @@ export async function getAnnualCashflow(year: number) {
             expenses: Number(monthlyCashflow?.totalExpenses ?? 0),
         });
     }
+
+    return annualCashflow;
 }

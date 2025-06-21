@@ -17,7 +17,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { getTransactionYears } from '@/data/getTransactionYears';
+import { getTransactionYearsRange } from '@/data/getTransactionYearsRange';
 import { getTransactionsByMonth } from '@/data/getTransactionsByMonth';
 
 
@@ -40,7 +40,7 @@ export default async function TransactionPage({ searchParams }: {
 
     const transactions = await getTransactionsByMonth({ month, year });
 
-    const yearsRange = await getTransactionYears();
+    const yearsRange = await getTransactionYearsRange();
 
     return (
         <div className={'max-w-screen-xl mx-auto py-10'}>

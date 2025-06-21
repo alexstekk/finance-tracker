@@ -36,7 +36,7 @@ export default async function RecentTransactions() {
                 {!transactions?.length &&
                     <p className={'text-center p-10 text-lg text-muted-foreground'}>There are no transactions</p>}
                 {!!transactions?.length &&
-                    <Table className={'mt-4 '}>
+                    <Table className={'mt-4'}>
                         <TableHeader>
                             <TableRow>
                                 <TableHead>

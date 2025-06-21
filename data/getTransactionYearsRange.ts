@@ -5,7 +5,7 @@ import { asc, eq } from 'drizzle-orm';
 import { db } from '@/db';
 import { transactionsTable } from '@/db/schema';
 
-export async function getTransactionYears() {
+export async function getTransactionYearsRange() {
     const { userId } = await auth();
 
     if (!userId) {
